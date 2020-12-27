@@ -1,4 +1,6 @@
 {
     "mongoURI":"mongodb+srv://Siddhant:siddhant23@siddev.nhw9s.mongodb.net/<dbname>?retryWrites=true&w=majority",
-    "jwtSecret":"mysecrtetoken"
+    "jwtSecret":"mysecrtetoken",
+    "githubClientId":"458b83ff1f439da68831",
+    "githubSecret":"a6841a48b5a676f7ee15698d0f7b4490054d6696"
 }
