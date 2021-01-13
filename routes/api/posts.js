@@ -161,22 +161,28 @@ router.put('/unlike/:id',auth,async(req,res)=>{
     }
 })
 
- //@route Put  api/posts/unlike/:id
+ //@route Delete  api/posts/comment/:id/:comment_id
  //@desc Like a post 
  //@access Private
-router.put('/unlike/:id',auth,async(req,res)=>{
+router.delete('/comment/:id/:comment_id',auth,async(req,res)=>{
     try {
        const post=await Post.findById(req.params.id);
-       //check post have been like by this user
-       if(post.likes.filter(like=>like.user.toString()===req.user.id).length===0)
+       const comment=post.comments.find(comment=>comment.id===req.params.comment_id);
+       //Make sure comment exist
+       if(!comment)
        {
-     return res.status(400).json({msg:'Post has not yet been liked'})
+           res.status(404).json({msg:'No Comment Found'});
+       }
+       //Check user
+       if(comment.user.toString()!==req.user.id)
+       {
+           return res.status(401).json({msg:'User Not authorized'});
 
-       } 
-     const removeIndex=post.likes.map(like=>like.user.toString()).indexOf(req.user.id);
-           post.likes.splice(removeIndex,1); 
-     await post.save();
-       res.json(post.likes);
+       }
+       const removeIndex=post.comments.map(comment=>comment.user.string).indexOf(req.user.id);
+       post.comments.splice(removeIndex,1);
+       await post.save();
+       res.json(post.comments)
     } catch (error) {
         res.status(500).json('Server Error');
     }
